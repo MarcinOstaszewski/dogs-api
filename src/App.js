@@ -39,7 +39,6 @@ function App() {
     }
 
     const hideModal = () => {
-        console.log('hideModal');
         setDisplay(false);
     }
 
