@@ -8,20 +8,75 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 16px;
+  padding: 8px;
   color: white;
 }
 .App-main {
-  background-color: #eef;
-  padding: 6px;
+  background-color: #fff;
+  padding: 24px;
 }
 .App-button {
   display: inline-block;
-  font-size: 12px;
-  padding: 2px 6px;
-  background-color: #ccd;
+  font-size: 16px;
+  padding: 4px 8px;
+  background-color: #38b7dd;
   color: #fff;
   border-radius: 4px;
-  margin-right: 4px;
+  margin-right: 8px;
+  margin-bottom: 8px;
 }
 
+.App-modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.App-modal .modal-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #eee;
+  border-radius: 12px;
+  border: 3px solid #ddd;
+  width: 75%;
+  height: 75%;
+}
+.App-modal .modal-close {
+  position: absolute;
+  top: -8px;
+  right: 8px;
+  font-size: 48px;
+}
+.App-modal img {
+  display: block;
+  padding: 24px;
+  max-width: 300px;
+  max-height: 300px;
+}
+.App-modal .modal-button {
+  padding: 12px 24px;
+  background-color: #38b7dd;
+  border-radius: 12px;
+  text-align: center;
+  margin: 0 24px;
+}
+.App-button,
+.App-modal .modal-close,
+.App-modal .modal-button {
+  cursor: pointer;
+}
+@media screen and (max-width: 440px) {
+  .App-modal img {
+    max-width: 75%;
+    max-height: 75%;
+  }
+}

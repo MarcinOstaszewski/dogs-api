@@ -1,29 +1,52 @@
 import React, { useState, useEffect} from 'react';
-import { Button } from './components/Button';
+import { Buttons } from './components/Buttons';
+import { Modal } from './components/Modal';
 import axios from 'axios';
 import './App.css';
 
 function App() {
 
-    const [buttons, setButtons] = useState({dogsRaces: []});
+    const [breedsData, setBreedsData] = useState({});
+    const [src, setSrc] = useState('');
+    const [alt, setAlt] = useState('');
+    const [breed, setBreed] = useState({});
+    const [display, setDisplay] = useState(false);
 
-    const createButtons = data => {
-        let dogsButtons = Object.keys(data).map( breed => {
-            if (data[breed].length > 0) {
-                return data[breed].map( subBreed => {
-                    return <Button breed={`${subBreed} ${breed}`}/>
-                })
+    const createButtonsData = breeds => {
+        let data = [];
+        Object.keys(breeds).forEach( breed => {
+            if (breeds[breed].length > 0) {
+                return breeds[breed].forEach( subBreed => {
+                    data.push({breed, subBreed});
+                });
             } else {
-                return <Button breed={breed}/>
+                data.push({breed});
             }
-        })
-        setButtons(dogsButtons)
+        });
+        return data;
+    }
+
+    const getPhoto = (e) => {
+        const {breed, subBreed} = e.target.dataset;
+        const path = breed + (subBreed ? '/' + subBreed : '');
+        (async () => {
+            const response = await axios(`https://dog.ceo/api/breed/${path}/images/random`);
+            setSrc(response.data.message);
+            setAlt(breed + (subBreed ? ' ' + subBreed : ''));
+            setBreed({breed, subBreed});
+            setDisplay(true);
+        })()
+    }
+
+    const hideModal = () => {
+        console.log('hideModal');
+        setDisplay(false);
     }
 
     useEffect(() => {
         (async () => {
             const response = await axios('https://dog.ceo/api/breeds/list/all');
-            createButtons(response.data.message);
+            setBreedsData(response.data.message);
         })();
     }, []);
 
@@ -33,8 +56,18 @@ function App() {
                 Click on a button below to see a random photo of the dog's breed.
             </header>
             <main className = "App-main">
-                {buttons}
+                <Buttons
+                    data={createButtonsData(breedsData)}
+                    getPhoto={getPhoto}
+                    notActive={display}
+                />
             </main>
+            <Modal src={src}
+                alt={alt}
+                breed={breed}
+                display={display}
+                getPhoto={getPhoto}
+                hideModal={hideModal}/>
         </div>
     );
 }
