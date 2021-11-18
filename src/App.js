@@ -30,12 +30,16 @@ function App() {
         const {breed, subBreed} = e.target.dataset;
         const path = breed + (subBreed ? '/' + subBreed : '');
         (async () => {
-            const response = await axios(`https://dog.ceo/api/breed/${path}/images/random`);
-            setSrc(response.data.message);
-            setAlt(breed + (subBreed ? ' ' + subBreed : ''));
-            setBreed({breed, subBreed});
-            setDisplay(true);
-        })()
+            try {
+                const response = await axios(`https://dog.ceo/api/breed/${path}/images/random`);
+                setSrc(response.data.message);
+                setAlt(breed + (subBreed ? ' ' + subBreed : ''));
+                setBreed({breed, subBreed});
+                setDisplay(true);
+            } catch (err) {
+                console.log(err);
+            }
+        })();
     }
 
     const hideModal = () => {
@@ -44,8 +48,12 @@ function App() {
 
     useEffect(() => {
         (async () => {
-            const response = await axios('https://dog.ceo/api/breeds/list/all');
-            setBreedsData(response.data.message);
+            try {
+                const response = await axios('https://dog.ceo/api/breeds/list/all');
+                setBreedsData(response.data.message);
+            } catch (err) {
+                console.log(err);
+            }
         })();
     }, []);
 
